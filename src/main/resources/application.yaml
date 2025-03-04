@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: CricLab
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:${DB_URL:mysql://localhost:3306/criclab_db}?serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+
+  jpa:
+    show-sql: true
+    format-sql: true
+    hibernate:
+      ddl-auto: ${DB_DDL:update}
+      dialect: org.hibernate.dialect.MySQL8Dialect
+
+server:
+  port: ${SERVER_PORT:8080}
