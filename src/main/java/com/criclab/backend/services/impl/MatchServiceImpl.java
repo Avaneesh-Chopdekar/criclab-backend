@@ -92,7 +92,6 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public List<List<String>> getPointTable() {
         List<List<String>> pointTable = new ArrayList<>();
-        String tableURL1 = "https://www.cricbuzz.com/cricket-series/6732/icc-cricket-world-cup-2023/points-table";
         String tableURL = "https://www.cricbuzz.com/cricket-series/9325/icc-champions-trophy-2025/points-table";
         try {
             Document document = Jsoup.connect(tableURL).get();
