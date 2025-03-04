@@ -28,4 +28,10 @@ public class MatchController {
         List<Match> matches = matchService.getLiveMatches();
         return ResponseEntity.ok(matches);
     }
+
+    @GetMapping("/point-table")
+    public ResponseEntity<List<List<String>>> getPointTable() {
+        List<List<String>> pointTable = matchService.getPointTable();
+        return ResponseEntity.ok(pointTable);
+    }
 }
