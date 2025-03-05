@@ -31,7 +31,7 @@ This is the **backend** for the CricLab web application, built with **Java Sprin
 ## 🛠️ Installation and Running the Project
 
 ### **1️⃣ Prerequisites**
-- **Java 17+** installed
+- **Java 23** installed
 - **Maven** (`brew install maven` or `choco install maven`)
 - **MySQL** (or use Docker)
 - **Docker** (if running via container)
