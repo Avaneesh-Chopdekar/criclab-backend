@@ -95,15 +95,16 @@ public class MatchServiceImpl implements MatchService {
         String tableURL = "https://www.cricbuzz.com/cricket-series/9325/icc-champions-trophy-2025/points-table";
         try {
             Document document = Jsoup.connect(tableURL).get();
-            Elements table = document.select("table.cb-srs-pnts");
-            Elements tableHeads = table.select("thead>tr>*");
-            List<String> headers = new ArrayList<>();
-            tableHeads.forEach(element -> {
-                headers.add(element.text());
+            Element groupB = document.select("table.cb-srs-pnts").first();
+            assert groupB != null;
+            Elements groupBHeads = groupB.select("thead>tr>*");
+            List<String> groupBHeaders = new ArrayList<>();
+            groupBHeads.forEach((element) -> {
+                groupBHeaders.add(element.text());
             });
-            pointTable.add(headers);
-            Elements bodyTrs = table.select("tbody>*");
-            bodyTrs.forEach(tr -> {
+            pointTable.add(groupBHeaders);
+            Elements groupBRows = groupB.select("tbody>*");
+            groupBRows.forEach(tr -> {
                 List<String> points = new ArrayList<>();
                 if (tr.hasAttr("class")) {
                     Elements tds = tr.select("td");
@@ -117,8 +118,32 @@ public class MatchServiceImpl implements MatchService {
 //                    System.out.println(points);
                     pointTable.add(points);
                 }
+            });
 
+            Element groupA = document.select("table.cb-srs-pnts").last();
+            assert groupA != null;
+            Elements groupAHeads = groupA.select("thead>tr>*");
+            List<String> groupAHeaders = new ArrayList<>();
+            groupAHeads.forEach(element -> {
+                groupAHeaders.add(element.text());
+            });
+            pointTable.add(groupAHeaders);
+            Elements groupARows = groupA.select("tbody>*");
 
+            groupARows.forEach(tr -> {
+                List<String> points = new ArrayList<>();
+                if (tr.hasAttr("class")) {
+                    Elements tds = tr.select("td");
+                    String team = tds.get(0).select("div.cb-col-84").text();
+                    points.add(team);
+                    tds.forEach(td -> {
+                        if (!td.hasClass("cb-srs-pnts-name")) {
+                            points.add(td.text());
+                        }
+                    });
+//                    System.out.println(points);
+                    pointTable.add(points);
+                }
             });
 
             System.out.println(pointTable);
