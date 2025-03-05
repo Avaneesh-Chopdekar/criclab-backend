@@ -27,7 +27,9 @@ public class MatchServiceImpl implements MatchService {
      */
     @Override
     public List<Match> getAllMatches() {
-        return matchRepository.findAll();
+        List<Match> matches = matchRepository.findAll();
+        matches.sort(Comparator.comparing(Match::getId).reversed());
+        return matches;
     }
 
     /**
