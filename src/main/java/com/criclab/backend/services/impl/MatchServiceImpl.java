@@ -89,6 +89,14 @@ public class MatchServiceImpl implements MatchService {
         }
     }
 
+    /**
+     * Returns the point table of the given tournament (currently only Champions Trophy 2025)
+     * The point table is represented as a list of lists of strings, where the first list contains the headers
+     * The rest of the lists contain the points for each team, with the team name as the first element
+     * and the points as the subsequent elements.
+     *
+     * @return A list of lists of strings, representing the point table of the given tournament.
+     */
     @Override
     public List<List<String>> getPointTable() {
         List<List<String>> pointTable = new ArrayList<>();
