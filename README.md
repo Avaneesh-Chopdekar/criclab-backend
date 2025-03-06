@@ -13,7 +13,9 @@ This is the **backend** for the CricLab web application, built with **Java Sprin
 - **Monitoring:** Spring Boot Actuator
 - **Containerization:** Docker
 - **Security:** CORS configured for frontend (`http://localhost:4200`)
-
+- **Performance Enhancements:**
+  - **Rate Limiting** – Prevents API abuse
+  - **Background Jobs** – Automates live match updates
 ---
 
 ## ✨ Features
@@ -24,7 +26,27 @@ This is the **backend** for the CricLab web application, built with **Java Sprin
 ✅ **OpenAPI (Swagger UI)** – Interactive API documentation  
 ✅ **Spring Boot Actuator** – Health monitoring & metrics  
 ✅ **JSoup Web Scraping** – Extract match details from external sources  
+✅ **Rate Limiting** – Controls excessive API requests    
+✅ **Scheduled Background Jobs** – Updates live scores periodically  
 ✅ **Docker Support** – Easily deploy as a container  
+
+---
+
+## 🛡️ Rate Limiting
+
+To prevent excessive API calls, **Spring Boot Rate Limiting** is implemented using a **custom interceptor** with `Bucket4j` library.
+
+- Limits requests per user based on IP.
+- Helps prevent abuse of public APIs.
+
+---
+
+## ⏳ Background Jobs (Live Score Updates)
+
+Live match scores are updated automatically using **Spring's @Scheduled annotation**.
+
+- Runs every **60 seconds** to fetch the latest scores.
+- No need for manual API calls to update live scores.
 
 ---
 
