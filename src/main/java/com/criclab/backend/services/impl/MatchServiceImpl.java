@@ -4,6 +4,7 @@ import com.criclab.backend.entity.Match;
 import com.criclab.backend.repository.MatchRepository;
 import com.criclab.backend.services.MatchService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import org.jsoup.Jsoup;
@@ -38,6 +39,7 @@ public class MatchServiceImpl implements MatchService {
      * @return A list of all live matches.
      */
     @Override
+    @Scheduled(fixedRate = 60000)
     public List<Match> getLiveMatches() {
         List<Match> matches = new ArrayList<>();
         try {
