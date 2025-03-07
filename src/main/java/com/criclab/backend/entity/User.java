@@ -35,6 +35,9 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private boolean enabled = true;
 
+    @Column
+    private String refreshToken;
+
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SystemLog> systemLogs = new ArrayList<>();
 
