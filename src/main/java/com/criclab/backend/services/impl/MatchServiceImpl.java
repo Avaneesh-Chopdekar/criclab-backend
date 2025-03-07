@@ -28,9 +28,7 @@ public class MatchServiceImpl implements MatchService {
      */
     @Override
     public List<Match> getAllMatches() {
-        List<Match> matches = matchRepository.findAll();
-        matches.sort(Comparator.comparing(Match::getId).reversed());
-        return matches;
+        return matchRepository.findAllByOrderByIdDesc();
     }
 
 
@@ -58,7 +56,6 @@ public class MatchServiceImpl implements MatchService {
             Document document = Jsoup.connect(url).get();
             Elements liveScoreElements = document.select("div.cb-mtch-lst.cb-tms-itm");
             for (Element match : liveScoreElements) {
-                HashMap<String, String> liveMatchInfo = new LinkedHashMap<>();
                 String teamsHeading = match.select("h3.cb-lv-scr-mtch-hdr").select("a").text();
                 String matchNumberVenue = match.select("span").text();
                 Elements matchBatTeamInfo = match.select("div.cb-hmscg-bat-txt");
@@ -70,7 +67,7 @@ public class MatchServiceImpl implements MatchService {
                 String textLive = match.select("div.cb-text-live").text();
                 String textComplete = match.select("div.cb-text-complete").text();
                 //getting match link
-                String matchLink = match.select("a.cb-lv-scrs-well.cb-lv-scrs-well-live").attr("href").toString();
+                String matchLink = match.select("a.cb-lv-scrs-well.cb-lv-scrs-well-live").attr("href");
 
                 Match match1 = new Match();
                 match1.setTeamHeading(teamsHeading);
@@ -122,16 +119,14 @@ public class MatchServiceImpl implements MatchService {
             assert groupB != null;
             Elements groupBHeads = groupB.select("thead>tr>*");
             List<String> groupBHeaders = new ArrayList<>();
-            groupBHeads.forEach((element) -> {
-                groupBHeaders.add(element.text());
-            });
+            groupBHeads.forEach((element) -> groupBHeaders.add(element.text()));
             pointTable.add(groupBHeaders);
             Elements groupBRows = groupB.select("tbody>*");
             groupBRows.forEach(tr -> {
                 List<String> points = new ArrayList<>();
                 if (tr.hasAttr("class")) {
                     Elements tds = tr.select("td");
-                    String team = tds.get(0).select("div.cb-col-84").text();
+                    String team = tds.getFirst().select("div.cb-col-84").text();
                     points.add(team);
                     tds.forEach(td -> {
                         if (!td.hasClass("cb-srs-pnts-name")) {
@@ -147,9 +142,7 @@ public class MatchServiceImpl implements MatchService {
             assert groupA != null;
             Elements groupAHeads = groupA.select("thead>tr>*");
             List<String> groupAHeaders = new ArrayList<>();
-            groupAHeads.forEach(element -> {
-                groupAHeaders.add(element.text());
-            });
+            groupAHeads.forEach(element -> groupAHeaders.add(element.text()));
             pointTable.add(groupAHeaders);
             Elements groupARows = groupA.select("tbody>*");
 
@@ -157,7 +150,7 @@ public class MatchServiceImpl implements MatchService {
                 List<String> points = new ArrayList<>();
                 if (tr.hasAttr("class")) {
                     Elements tds = tr.select("td");
-                    String team = tds.get(0).select("div.cb-col-84").text();
+                    String team = tds.getFirst().select("div.cb-col-84").text();
                     points.add(team);
                     tds.forEach(td -> {
                         if (!td.hasClass("cb-srs-pnts-name")) {
