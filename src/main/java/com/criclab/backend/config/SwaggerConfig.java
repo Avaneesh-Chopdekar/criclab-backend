@@ -30,7 +30,8 @@ public class SwaggerConfig {
                 ) // TODO: Change production server url after deployment
                 .tags(
                         List.of(
-                                new Tag().name("Matches").description("Endpoints for managing matches")
+                                new Tag().name("Matches").description("Endpoints for managing matches"),
+                                new Tag().name("Admin Authentication").description("Endpoints for authentication")
                         )
                 );
     }
