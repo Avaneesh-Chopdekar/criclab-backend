@@ -25,6 +25,7 @@ public class Match {
     private String textComplete;
     private MatchStatus status;
     private Date date = new Date();
+    private Date deletedAt;
 
     public void setMatchStatus() {
         if (textComplete.isEmpty()) {
