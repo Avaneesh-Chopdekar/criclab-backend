@@ -164,4 +164,26 @@ public class MatchServiceImpl implements MatchService {
         }
         return pointTable;
     }
+
+    @Override
+    public boolean softDeleteMatch(Long id) {
+        Match existingMatch = matchRepository.findById(id).orElse(null);
+        if (existingMatch == null) {
+            return false;
+        }
+
+        existingMatch.setDeletedAt(new Date(System.currentTimeMillis()));
+        matchRepository.save(existingMatch);
+        return true;
+    }
+
+    @Override
+    public boolean deleteMatch(Long id) {
+        Match existingMatch = matchRepository.findById(id).orElse(null);
+        if (existingMatch == null) {
+            return false;
+        }
+        matchRepository.delete(existingMatch);
+        return true;
+    }
 }
