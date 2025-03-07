@@ -14,6 +14,6 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     Optional<Match> findByTeamHeading(String teamHeading);
 
 
-    @Query("SELECT m FROM Match m WHERE m.deletedAt = null ORDER BY id DESC")
+    @Query("SELECT m FROM Match m WHERE m.deletedAt IS NULL ORDER BY id DESC")
     List<Match> findAllActiveMatches();
 }
