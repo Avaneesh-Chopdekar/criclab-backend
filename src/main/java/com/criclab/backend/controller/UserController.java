@@ -1,6 +1,7 @@
 package com.criclab.backend.controller;
 
 import com.criclab.backend.dto.JwtResponse;
+import com.criclab.backend.dto.UserAndJwtResponse;
 import com.criclab.backend.entity.User;
 import com.criclab.backend.repository.UserRepository;
 import com.criclab.backend.services.JwtService;
@@ -36,7 +37,7 @@ public class UserController {
 
         String accessToken = jwtService.generateToken(email, true);
         String refreshToken = jwtService.generateToken(email, false);
-        JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken, email);
-        return ResponseEntity.ok(jwtResponse);
+        UserAndJwtResponse response = new UserAndJwtResponse(accessToken, refreshToken, user.get().getEmail(), user.get().isSuperAdmin(), user.get().isEnabled());
+        return ResponseEntity.ok(response);
     }
 }

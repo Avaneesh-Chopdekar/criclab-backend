@@ -51,7 +51,7 @@ public class AuthController {
 
             userRepository.save(newUser);
 
-            JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken, newUser.getEmail());
+            JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken);
             return ResponseEntity.ok(jwtResponse);
         } catch (Exception e) {
             // e.printStackTrace();
@@ -70,7 +70,7 @@ public class AuthController {
         }
 
         user.get().setRefreshToken(refreshToken);
-        JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken, user.get().getEmail());
+        JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken);
         return ResponseEntity.ok().body(jwtResponse);
     }
 
@@ -93,7 +93,7 @@ public class AuthController {
         String accessToken = jwtService.generateToken(email, true);
         String refreshToken = jwtService.generateToken(email, false);
         user.get().setRefreshToken(refreshToken);
-        JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken, email);
+        JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken);
         return ResponseEntity.ok().body(jwtResponse);
     }
 
