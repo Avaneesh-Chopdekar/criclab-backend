@@ -18,7 +18,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/matches")
-@CrossOrigin(origins = "http://localhost:4200")
 @Tag(name = "Matches", description = "Endpoints for managing matches")
 public class MatchController {
 
