@@ -32,6 +32,12 @@ public class MatchController {
         return ResponseEntity.ok(matches);
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<List<Match>> getAllActiveMatches() {
+        List<Match> matches = matchService.getAllActiveMatches();
+        return ResponseEntity.ok(matches);
+    }
+
     @GetMapping("/live")
     public ResponseEntity<List<Match>> getLiveMatches() {
         List<Match> matches = matchService.getLiveMatches();

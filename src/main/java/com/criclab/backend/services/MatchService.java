@@ -9,6 +9,8 @@ public interface MatchService {
 
     List<Match> getAllMatches();
 
+    List<Match> getAllActiveMatches();
+
     List<Match> getLiveMatches();
 
     List<List<String>> getPointTable();

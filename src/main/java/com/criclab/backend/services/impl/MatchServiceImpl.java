@@ -33,6 +33,17 @@ public class MatchServiceImpl implements MatchService {
         return matches;
     }
 
+
+    /**
+     * Gets all active matches where deletedAt is null.
+     *
+     * @return A list of all active matches.
+     */
+    @Override
+    public List<Match> getAllActiveMatches() {
+        return matchRepository.findAllActiveMatches();
+    }
+
     /**
      * Gets all live matches
      *
