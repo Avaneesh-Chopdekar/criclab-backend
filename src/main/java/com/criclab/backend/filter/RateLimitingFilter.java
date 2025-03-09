@@ -1,4 +1,4 @@
-package com.criclab.backend.config;
+package com.criclab.backend.filter;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
@@ -21,7 +21,7 @@ public class RateLimitingFilter implements Filter {
     private Bucket getBucket(String key) {
         return cache.computeIfAbsent(key, k ->
                 Bucket.builder()
-                        .addLimit(Bandwidth.classic(10, Refill.intervally(10, Duration.ofMinutes(1))))
+                        .addLimit(Bandwidth.classic(100, Refill.intervally(100, Duration.ofMinutes(10))))
                         .build()
         );
     }
