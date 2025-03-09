@@ -49,7 +49,7 @@ public class MatchController {
         return ResponseEntity.ok(pointTable);
     }
 
-    @PatchMapping("/{id}/toggle-soft-delete")
+    @DeleteMapping("/{id}/soft-delete")
     public ResponseEntity<?> softDeleteMatch(@PathVariable Long id, HttpServletRequest request) {
         String token = request.getHeader("Authorization").replace("Bearer ", "");
         String email = jwtService.getUsernameFromToken(token);
@@ -63,9 +63,9 @@ public class MatchController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
 
-        boolean success = matchService.toggleSoftDeleteMatch(id);
+        boolean deleted = matchService.softDeleteMatch(id);
 
-        if (!success) {
+        if (!deleted) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Match not found");
         }
 
