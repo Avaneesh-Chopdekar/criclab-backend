@@ -3,7 +3,6 @@ package com.criclab.backend.services;
 import com.criclab.backend.entity.Match;
 
 import java.util.List;
-import java.util.Map;
 
 public interface MatchService {
 
@@ -15,7 +14,7 @@ public interface MatchService {
 
     List<List<String>> getPointTable();
 
-    boolean toggleSoftDeleteMatch(Long id);
+    boolean softDeleteMatch(Long id);
 
     boolean deleteMatch(Long id);
 }
