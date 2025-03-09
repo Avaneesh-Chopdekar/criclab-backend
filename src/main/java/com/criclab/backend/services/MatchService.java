@@ -15,7 +15,7 @@ public interface MatchService {
 
     List<List<String>> getPointTable();
 
-    boolean softDeleteMatch(Long id);
+    boolean toggleSoftDeleteMatch(Long id);
 
     boolean deleteMatch(Long id);
 }
