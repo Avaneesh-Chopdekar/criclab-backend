@@ -35,6 +35,10 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
+        if (user.get().getRefreshToken() == null || user.get().getRefreshToken().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
         String accessToken = jwtService.generateToken(email, true);
         String refreshToken = jwtService.generateToken(email, false);
         UserAndJwtResponse response = new UserAndJwtResponse(accessToken, refreshToken, user.get().getEmail(), user.get().isSuperAdmin(), user.get().isEnabled());

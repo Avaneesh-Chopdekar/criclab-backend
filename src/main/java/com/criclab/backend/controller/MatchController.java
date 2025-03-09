@@ -59,6 +59,10 @@ public class MatchController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
+        if (user.get().getRefreshToken() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
         boolean deleted = matchService.softDeleteMatch(id);
 
         if (!deleted) {
@@ -76,6 +80,10 @@ public class MatchController {
 
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        if (user.get().getRefreshToken() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
 
         boolean deleted = matchService.deleteMatch(id);

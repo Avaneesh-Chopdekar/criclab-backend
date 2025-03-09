@@ -2,12 +2,12 @@ package com.criclab.backend.controller;
 
 import com.criclab.backend.dto.AuthRequest;
 import com.criclab.backend.dto.LogoutResponse;
-import com.criclab.backend.dto.RefreshTokenRequest;
 import com.criclab.backend.dto.JwtResponse;
 import com.criclab.backend.entity.User;
 import com.criclab.backend.repository.UserRepository;
 import com.criclab.backend.services.JwtService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -70,45 +70,48 @@ public class AuthController {
         }
 
         user.get().setRefreshToken(refreshToken);
+        userRepository.save(user.get());
         JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken);
         return ResponseEntity.ok().body(jwtResponse);
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
-        if (!jwtService.validateToken(request.refreshToken())) {
-            return ResponseEntity.badRequest().body("Invalid refresh token");
-        }
-
-        String email = jwtService.getUsernameFromToken(request.refreshToken());
+    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        String email = jwtService.getUsernameFromToken(token);
         Optional<User> user = userRepository.findByEmail(email);
+
         if (user.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
-        if (user.get().getRefreshToken() == null || !user.get().getRefreshToken().equals(request.refreshToken())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
+        if (user.get().getRefreshToken() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
 
         String accessToken = jwtService.generateToken(email, true);
         String refreshToken = jwtService.generateToken(email, false);
         user.get().setRefreshToken(refreshToken);
+        userRepository.save(user.get());
         JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken);
         return ResponseEntity.ok().body(jwtResponse);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@Valid @RequestBody RefreshTokenRequest request) {
-        if (!jwtService.validateToken(request.refreshToken())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
-        }
-        String email = jwtService.getUsernameFromToken(request.refreshToken());
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        String email = jwtService.getUsernameFromToken(token);
+        Optional<User> user = userRepository.findByEmail(email);
 
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("User not found")
-        );
-        user.setRefreshToken(null);
-        userRepository.save(user);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        if (user.get().getRefreshToken() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+        user.get().setRefreshToken(null);
+        userRepository.save(user.get());
 
         LogoutResponse logoutResponse = new LogoutResponse("Logged out successfully");
         return ResponseEntity.ok(logoutResponse);
