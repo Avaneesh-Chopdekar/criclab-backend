@@ -170,13 +170,17 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public boolean softDeleteMatch(Long id) {
+    public boolean toggleSoftDeleteMatch(Long id) {
         Match existingMatch = matchRepository.findById(id).orElse(null);
         if (existingMatch == null) {
             return false;
         }
 
-        existingMatch.setDeletedAt(new Date(System.currentTimeMillis()));
+        if (existingMatch.getDeletedAt() == null) {
+            existingMatch.setDeletedAt(new Date(System.currentTimeMillis()));
+        } else {
+            existingMatch.setDeletedAt(null);
+        }
         matchRepository.save(existingMatch);
         return true;
     }
