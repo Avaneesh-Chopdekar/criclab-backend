@@ -38,9 +38,6 @@ public class User implements UserDetails {
     @Column
     private String refreshToken;
 
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<SystemLog> systemLogs = new ArrayList<>();
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
