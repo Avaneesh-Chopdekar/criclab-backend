@@ -2,6 +2,10 @@
 
 This is the **backend** for the CricLab web application, built with **Java Spring Boot**. It provides **live scores, match history, and points table data** via REST APIs.
 
+## 🎬 Video Demo
+
+[![Video Demo](https://img.youtube.com/vi/TVkFZL7rLao/0.jpg)](https://www.youtube.com/watch?v=TVkFZL7rLao)
+
 ---
 
 ## 🚀 Tech Stack
