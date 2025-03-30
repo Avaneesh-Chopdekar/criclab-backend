@@ -12,7 +12,9 @@ public interface MatchService {
 
     List<Match> getLiveMatches();
 
-    List<List<String>> getPointTable();
+    List<List<String>> getICTPointTable();
+
+    List<List<String>> getIPLPointTable();
 
     boolean softDeleteMatch(Long id);
 

@@ -110,7 +110,7 @@ public class MatchServiceImpl implements MatchService {
      * @return A list of lists of strings, representing the point table of the given tournament.
      */
     @Override
-    public List<List<String>> getPointTable() {
+    public List<List<String>> getICTPointTable() {
         List<List<String>> pointTable = new ArrayList<>();
         String tableURL = "https://www.cricbuzz.com/cricket-series/9325/icc-champions-trophy-2025/points-table";
         try {
@@ -160,6 +160,44 @@ public class MatchServiceImpl implements MatchService {
 //                    System.out.println(points);
                     pointTable.add(points);
                 }
+            });
+
+            System.out.println(pointTable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pointTable;
+    }
+
+    public List<List<String>> getIPLPointTable() {
+        List<List<String>> pointTable = new ArrayList<>();
+        String tableURL = "https://www.cricbuzz.com/cricket-series/9237/indian-premier-league-2025/points-table";
+        try {
+            Document document = Jsoup.connect(tableURL).get();
+            Elements table = document.select("table.cb-srs-pnts");
+            Elements tableHeads = table.select("thead>tr>*");
+            List<String> headers = new ArrayList<>();
+            tableHeads.forEach(element -> {
+                headers.add(element.text());
+            });
+            pointTable.add(headers);
+            Elements bodyTrs = table.select("tbody>*");
+            bodyTrs.forEach(tr -> {
+                List<String> points = new ArrayList<>();
+                if (tr.hasAttr("class")) {
+                    Elements tds = tr.select("td");
+                    String team = tds.get(0).select("div.cb-col-84").text();
+                    points.add(team);
+                    tds.forEach(td -> {
+                        if (!td.hasClass("cb-srs-pnts-name")) {
+                            points.add(td.text());
+                        }
+                    });
+//                    System.out.println(points);
+                    pointTable.add(points);
+                }
+
+
             });
 
             System.out.println(pointTable);

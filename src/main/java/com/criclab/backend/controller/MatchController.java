@@ -43,9 +43,15 @@ public class MatchController {
         return ResponseEntity.ok(matches);
     }
 
-    @GetMapping("/point-table")
-    public ResponseEntity<List<List<String>>> getPointTable() {
-        List<List<String>> pointTable = matchService.getPointTable();
+    @GetMapping("/ict-point-table")
+    public ResponseEntity<List<List<String>>> getICTPointTable() {
+        List<List<String>> pointTable = matchService.getICTPointTable();
+        return ResponseEntity.ok(pointTable);
+    }
+
+    @GetMapping("/ipl-point-table")
+    public ResponseEntity<List<List<String>>> getIPLPointTable() {
+        List<List<String>> pointTable = matchService.getIPLPointTable();
         return ResponseEntity.ok(pointTable);
     }
 
